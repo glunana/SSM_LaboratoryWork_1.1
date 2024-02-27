@@ -43,17 +43,29 @@ def newton_method(start_point, epsilon):
         x = x_next
     return x_next
 
-def simple_iteration_method(initial_guess, epsilon, max_iterations=1000):
+
+
+def check_convergence_simple_iteration_method(initial_guess, epsilon, max_iterations=1000):
     x = initial_guess
     iterations = 0
+
+    convergence_criterion = 0.03
+
     while iterations < max_iterations:
         x_next = equivalent_expression(x)
         if np.isnan(x_next):
             break
         if np.abs(x_next - x) < epsilon:
             break
+
+        derivative_value = derivative(x)
+        if np.abs(derivative_value) >= convergence_criterion:
+            print("Метод простої ітерації може не збігатися: |f'(x)| >=", convergence_criterion)
+            break
+
         x = x_next
         iterations += 1
+
     return x_next
 
 # Графік
@@ -75,5 +87,5 @@ print("Метод хорд x1: ", chord_method(-0.999, -0.8, 0.03))
 print("Метод хорд x2: ", chord_method(1, 1.2, 0.03))
 print("Метод Ньютона x1: ", newton_method(-0.999, 0.03))
 print("Метод Ньютона x2: ", newton_method(1, 0.03))
-print("Метод простої ітерації x1: ", simple_iteration_method(-0.999, 0.03))
-print("Метод простої ітерації x2: ", simple_iteration_method(1.032, 0.03))
+print("Метод простої ітерації x1: ", check_convergence_simple_iteration_method(-0.999, 0.03))
+print("Метод простої ітерації x2: ", check_convergence_simple_iteration_method(1, 0.03))
